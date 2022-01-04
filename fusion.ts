@@ -21,7 +21,36 @@ const getFusionResult = (_user: string, _buy_blockhash: string, _runeId: number,
         return "fail"
 }
 
-const rune = 0;
-const result = getFusionResult(randomETHAddress(), randomBlockhash(), rune, true)
+//const rune = 0;
+//const result = getFusionResult(randomETHAddress(), randomBlockhash(), rune, true)
 
-console.log(result);
+
+for (let i = 0; i < 11; i++) {
+    for (let j = 0; j < 1000; j++) {
+        for (let k = 0; k < 2; k++) {
+            var result = getFusionResult(randomETHAddress(), randomBlockhash(), i, k === 0 ? false : true)
+
+            data.push({
+                'rune': i,
+                'fusion': amountOfFusion[i],
+                'lucky': k,
+                'result': result,
+            })
+        }
+    }
+   
+}
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const csvWriter = createCsvWriter({
+     path: name + '.csv',
+     header: [
+     {id: 'rune', title: 'rune'},
+     {id: 'fusion', title: 'fusion'},
+     {id: 'lucky', title: 'lucky'},
+     {id: 'result', title: 'result'},
+     ]
+});
+
+csvWriter
+    .writeRecords(data)
+    .then(()=> console.log('The CSV file was written successfully'));    
