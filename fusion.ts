@@ -23,7 +23,7 @@ const getFusionResult = (_user: string, _buy_blockhash: string, _runeId: number,
 
 //const rune = 0;
 //const result = getFusionResult(randomETHAddress(), randomBlockhash(), rune, true)
-
+var data = []
 
 for (let i = 0; i < 11; i++) {
     for (let j = 0; j < 1000; j++) {
