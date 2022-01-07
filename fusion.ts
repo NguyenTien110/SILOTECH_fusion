@@ -6,7 +6,7 @@ const formulaString = ["Common", "Rare", "Epic", "Legendary"]
 const luckyPotion = [7, 7, 7, 7, 7, 5, 5, 3, 3, 1, 1]
 const successRateInit = [80, 60, 40, 30, 25, 15, 15, 5, 3, 1, 0.5]
 
-const getFusionResult = (_user: string, _fusion_blockhash: string, _runeId: number, _lucky_potion: boolean): string => {
+const getFusionResult = (_user: string, _fusion_blockhash: string, _runeId: number, _lucky_potion: boolean): boolean => {
     if (_runeId < 0 || _runeId > 10) throw new Error(`_runeId must be in range 0 and 10`)
 
     var lucky = _lucky_potion === true ? luckyPotion[_runeId] : 0
@@ -21,7 +21,7 @@ const getFusionResult = (_user: string, _fusion_blockhash: string, _runeId: numb
         return false
 }
 
-//const rune = 0;
+// const rune = 0;
 //const result = getFusionResult(randomETHAddress(), randomBlockhash(), rune, true)
 var data = []
 
@@ -42,7 +42,7 @@ for (let i = 0; i < 11; i++) {
 }
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter = createCsvWriter({
-     path: name + '.csv',
+     path: 'result.csv',
      header: [
      {id: 'rune', title: 'rune'},
      {id: 'fusion', title: 'fusion'},
