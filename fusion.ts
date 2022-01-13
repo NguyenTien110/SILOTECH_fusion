@@ -6,29 +6,34 @@ const formulaString = ["Common", "Rare", "Epic", "Legendary"]
 const luckyPotion = [7, 7, 7, 7, 7, 5, 5, 3, 3, 1, 1]
 const successRateInit = [80, 60, 40, 30, 25, 15, 15, 5, 3, 1, 0.5]
 
-const getFusionResult = (_user: string, _fusion_blockhash: string, _runeId: number, _lucky_potion: boolean): boolean => {
+const getFusionResult = (
+    _user: string,
+    _fusion_blockhash: string,
+    _runeId: number,
+    _lucky_potion: number[]
+): boolean => {
     if (_runeId < 0 || _runeId > 10) throw new Error(`_runeId must be in range 0 and 10`)
 
-    var lucky = _lucky_potion === true ? luckyPotion[_runeId] : 0
+    var lucky = _lucky_potion.length === 0 ? 0 : luckyPotion[_runeId]
 
     var seed = seedGenerator(_user, _fusion_blockhash, _runeId, amountOfFusion[_runeId], formula[_runeId], lucky)
 
     var prob = parseInt('0x' + seed, 16) % 1000
-    
-    if (prob < (successRateInit[_runeId] + lucky) * 10) 
+
+    if (prob < (successRateInit[_runeId] + lucky) * 10)
         return true
-    else 
+    else
         return false
 }
 
 // const rune = 0;
-//const result = getFusionResult(randomETHAddress(), randomBlockhash(), rune, true)
+//const result = getFusionResult(randomETHAddress(), randomBlockhash(), rune, [])
 var data = []
 
 for (let i = 0; i < 11; i++) {
     for (let j = 0; j < 1000; j++) {
         for (let k = 0; k < 2; k++) {
-            var result = getFusionResult(randomETHAddress(), randomBlockhash(), i, k === 0 ? false : true)
+            var result = getFusionResult(randomETHAddress(), randomBlockhash(), i, k === 0 ? [] : [1])
 
             data.push({
                 'rune': i,
@@ -38,19 +43,19 @@ for (let i = 0; i < 11; i++) {
             })
         }
     }
-   
+
 }
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter = createCsvWriter({
-     path: 'result.csv',
-     header: [
-     {id: 'rune', title: 'rune'},
-     {id: 'fusion', title: 'fusion'},
-     {id: 'lucky', title: 'lucky'},
-     {id: 'result', title: 'result'},
-     ]
+    path: 'result.csv',
+    header: [
+        { id: 'rune', title: 'rune' },
+        { id: 'fusion', title: 'fusion' },
+        { id: 'lucky', title: 'lucky' },
+        { id: 'result', title: 'result' },
+    ]
 });
 
 csvWriter
     .writeRecords(data)
-    .then(()=> console.log('The CSV file was written successfully'));    
+    .then(() => console.log('The CSV file was written successfully'));    
