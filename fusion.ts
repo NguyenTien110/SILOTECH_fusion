@@ -14,16 +14,17 @@ const getFusionResult = (
 ): boolean => {
     if (_runeId < 0 || _runeId > 10) throw new Error(`_runeId must be in range 0 and 10`)
 
-    var lucky = _lucky_potion.length === 0 ? 0 : luckyPotion[_runeId]
+    var lucky = _lucky_potion.length === 0 ? 0 : _lucky_potion.reduce((value, runeId) => value + luckyPotion[runeId], 0)
 
     var seed = seedGenerator(_user, _fusion_blockhash, _runeId, amountOfFusion[_runeId], formula[_runeId], lucky)
+    
+    var prob = parseInt('0x' + seed, 16) % 100
 
-    var prob = parseInt('0x' + seed, 16) % 1000
+    var rate = successRateInit[_runeId] + lucky
 
-    if (prob < (successRateInit[_runeId] + lucky) * 10)
-        return true
-    else
-        return false
+    var successRate = rate > 100 ? 100 : rate
+
+    return prob < successRate ? true : false
 }
 
 // const rune = 0;
@@ -31,9 +32,9 @@ const getFusionResult = (
 var data = []
 
 for (let i = 0; i < 11; i++) {
-    for (let j = 0; j < 1000; j++) {
+    for (let j = 0; j < 10; j++) {
         for (let k = 0; k < 2; k++) {
-            var result = getFusionResult(randomETHAddress(), randomBlockhash(), i, k === 0 ? [] : [1])
+            var result = getFusionResult(randomETHAddress(), randomBlockhash(), i, k === 0 ? [] : [i, i])
 
             data.push({
                 'rune': i,
