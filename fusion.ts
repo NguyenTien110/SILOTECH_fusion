@@ -1,10 +1,10 @@
 import { randomBlockhash, randomETHAddress, seedGenerator } from "./random";
 
-const amountOfFusion = [5, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2]
+const amountOfFusion = [5, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2]
 const formula = [0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3]
 const formulaString = ["Common", "Rare", "Epic", "Legendary"]
 const luckyPotion = [10, 10, 10, 10, 10, 10, 10, 7, 7, 5, 5]
-const successRateInit = [90, 80, 75, 70, 65, 60, 55, 50, 45, 35, 25]
+const successRateInit = [90, 85, 75, 70, 65, 60, 55, 45, 45, 35, 25]
 
 const getFusionResult = (
     _user: string,
